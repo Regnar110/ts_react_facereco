@@ -39,4 +39,4 @@ export interface BoundingBoxArrayOfObjects {
 
 //FaceRecognition COMPONENT
 
-export type FaceRecoProps = {imageURL:string} 
+export type FaceRecoProps = {imageURL:string, box: BoundingBoxArrayOfObjects[]} 
