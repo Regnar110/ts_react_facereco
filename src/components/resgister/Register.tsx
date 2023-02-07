@@ -1,11 +1,42 @@
-import React from "react";
+import React, {Component} from "react";
+import { RegisterProps, RegisterState } from "../../Interfaces/State/RegisterState";
+import { autoSignOrRegisterFetch } from "../../utils/autoSignInOrRegisterFetch";
 
-interface RegisterProps {
-    onRouteChange(route:string):void
-}
+class Register extends Component<RegisterProps, RegisterState> {
+    state: RegisterState = {
+        registerName: "",
+        registerEmail: "",
+        registerPassword: ""
+    }
 
-const Register = ({onRouteChange}:RegisterProps) => {
-    return(
+    onNameChange = (target:HTMLInputElement) => {
+        this.setState({registerName:target.value})
+    }
+
+    onEmailChange = (target:HTMLInputElement) => {
+        this.setState({registerEmail: target.value})
+    }
+
+    onPasswordChange = (target:HTMLInputElement) => {
+        this.setState({registerPassword: target.value})
+    }
+
+    onRegister = async () => {
+        const reqBody = {
+            name: this.state.registerName,
+            email: this.state.registerEmail,
+            password:this.state.registerPassword
+        }
+
+        const user = await autoSignOrRegisterFetch("register/", "POST", reqBody)
+        console.log("jestem register")
+        console.log(user)
+        this.props.loadUser(user)
+        this.props.onRouteChange("home")
+    }
+
+    render() {
+        return(
         <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
             <main className="pa4 black-80">
                 <div className="measure">
@@ -13,27 +44,45 @@ const Register = ({onRouteChange}:RegisterProps) => {
                     <legend className="f1 fw6 ph0 mh0">Register</legend>
                     <div className="mt3">
                         <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
-                        <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="text" name="name"  id="name"/>
+                        <input 
+                            onChange={event => this.onNameChange(event.target)}
+                            className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                            type="text" 
+                            name="name"  
+                            id="name"
+                        />
                     </div>
                     <div className="mt3">
                         <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-                        <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address"  id="email-address"/>
+                        <input 
+                            onChange={event => this.onEmailChange(event.target)}
+                            className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                            type="email" 
+                            name="email-address"  
+                            id="email-address"
+                        />
                     </div>
                     <div className="mv3">
                         <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-                        <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password"/>
+                        <input 
+                            onChange={event => this.onPasswordChange(event.target)}
+                            className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                            type="password" 
+                            name="password"  
+                            id="password"
+                        />
                     </div>
                     </fieldset>
                     <div className="">
                     <input className="tc b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                         type="text" value="Register"
-                        onClick={()=>onRouteChange("home")}
+                        onClick={this.onRegister}
                     />
                     </div>
                 </div>
             </main>
-        </article>
-    )
+        </article>            
+        )
+    }
 }
-
 export default Register;

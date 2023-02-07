@@ -10,7 +10,7 @@ import ParticlesBg from 'particles-bg'
 // 4c3898a7de1c4ee288743bceb3522aeb
 
 //INTERFACES
-import { AppState } from './Interfaces/AppState/AppState';
+import { AppState, LoadedUser } from './Interfaces/State/AppState';
 
 //UTILS
 import { faceRecognition } from './utils/faceRecognition';
@@ -23,8 +23,25 @@ class App extends Component<object, AppState> {
       imageURL: "",
       box: [],
       route: "signin",
-      isSignedIn: false
+      isSignedIn: false,
+      user: {
+        id: "",
+        name: "",
+        email:"",
+        entries: 0,
+        joined: ""
+      }
     };
+
+  loadUser = (userData:LoadedUser) => {
+    this.setState({user: {
+      id: userData.id,
+      name: userData.name,
+      email: userData.name,
+      entries: userData.entries,
+      joined: userData.joined
+    }}, () => console.log(this.state.user)) /// TUUUUU 
+  }
 
   onInputChange = (target: HTMLInputElement) => {
     this.setState({input: target.value})
@@ -75,9 +92,9 @@ class App extends Component<object, AppState> {
         </>
         :(      
           route === "signin" ?
-            <SignIn onRouteChange={this.onRouteChange}/>
+            <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
           :
-            <Register onRouteChange={this.onRouteChange} />
+            <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         )
         }
       </div>
