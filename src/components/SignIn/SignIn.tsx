@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { SignInState, SignInProps } from "../../Interfaces/State/SignInState";
-import { autoSignOrRegisterFetch } from "../../utils/autoSignInOrRegisterFetch";
+import { autoFetch } from "../../utils/autoFetch";
 
 class SignIn extends Component<SignInProps, SignInState> {
     state: SignInState = {
@@ -21,8 +21,9 @@ class SignIn extends Component<SignInProps, SignInState> {
             email: this.state.signInEmail,
             password:this.state.signInPassword
         }
-        const user = await autoSignOrRegisterFetch("signin", "POST", reqBody )
-        if(user.length >0) {
+        const user = await autoFetch("signin/", "POST", reqBody )
+        if(typeof user === "object") {
+            console.log(user)
             this.props.loadUser(user)
             this.props.onRouteChange("home")
         } 

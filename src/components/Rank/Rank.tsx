@@ -1,13 +1,14 @@
 import React from "react"
+import { RankProps } from "../../Interfaces/Rank/Rank"
 
-const Rank:React.FC = () => {
+const Rank = ({rank, name}:RankProps) => {
     return(
         <div>
             <div className="white f3">
-                {`Mateusz, your current rank is...`}
+                {`${name}, your current rank is...`}
             </div>
             <div className="white f1">
-                {`#5`}
+                {`#${rank}`}
             </div>
         </div>
     )

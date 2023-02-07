@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { RegisterProps, RegisterState } from "../../Interfaces/State/RegisterState";
-import { autoSignOrRegisterFetch } from "../../utils/autoSignInOrRegisterFetch";
+import { autoFetch } from "../../utils/autoFetch";
 
 class Register extends Component<RegisterProps, RegisterState> {
     state: RegisterState = {
@@ -28,8 +28,7 @@ class Register extends Component<RegisterProps, RegisterState> {
             password:this.state.registerPassword
         }
 
-        const user = await autoSignOrRegisterFetch("register/", "POST", reqBody)
-        console.log("jestem register")
+        const user = await autoFetch("register/", "POST", reqBody)
         console.log(user)
         this.props.loadUser(user)
         this.props.onRouteChange("home")

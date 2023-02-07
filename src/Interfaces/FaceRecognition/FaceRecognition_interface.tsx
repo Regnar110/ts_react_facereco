@@ -36,6 +36,12 @@ export interface BoundingBoxArrayOfObjects {
     right_col:number;
 }
 
+//AutoFetch reqBody Interface 
+
+export interface imageRequestBody {
+    id: string,
+    imageURL: string,
+}
 
 //FaceRecognition COMPONENT
 
