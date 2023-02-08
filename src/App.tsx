@@ -60,11 +60,11 @@ class App extends Component<object, AppState> {
       imageURL: this.state.input,
     }
 
-    const recognition = await autoFetch("image/", "PUT", faceRecoBody)
+    const recognition = await autoFetch("image/", "PUT", faceRecoBody) // {entries: number, fr_response:Array}
     console.log("Reco to:")
     console.log(recognition)
-    const arrayOfBoundingObjects = calculateFaceLocation(recognition)
-    this.setState({box:[...arrayOfBoundingObjects]})
+    const arrayOfBoundingObjects = calculateFaceLocation(recognition.fr_response)
+    this.setState({box:[...arrayOfBoundingObjects], user: Object.assign(this.state.user, {entries: recognition.entries})})
 
   }
 
@@ -77,13 +77,29 @@ class App extends Component<object, AppState> {
     this.setState({route:route})
   }
 
+  onUserSignOut = () => {
+    this.setState({
+      input:"",
+      imageURL: "",
+      box: [],
+      isSignedIn: false,
+      user: {
+        id:"",
+        name:"",
+        email:"",
+        entries: 0,
+        joined: ""
+      }
+    })
+  }
+
 
   render():JSX.Element {
     const {isSignedIn, imageURL, route, box } = this.state
     return(
       <div className='App'>
         <ParticlesBg type="custom" bg={true} />       
-        <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn}/>
+        <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} onUserSignOut={this.onUserSignOut}/>
         {this.state.route === "home" ?
         <>
           <Logo />
