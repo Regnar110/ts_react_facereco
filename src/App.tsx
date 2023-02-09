@@ -11,6 +11,7 @@ import ParticlesBg from 'particles-bg'
 
 //INTERFACES
 import { AppState, LoadedUser } from './Interfaces/State/AppState';
+import { AutoFetchImagePathReturnType } from './Interfaces/AutoFetchReturnTypes/autoFetchReturnInterface';
 
 //UTILS
 import './App.css';
@@ -60,7 +61,7 @@ class App extends Component<object, AppState> {
       imageURL: this.state.input,
     }
 
-    const recognition = await autoFetch("image/", "PUT", faceRecoBody) // {entries: number, fr_response:Array}
+    const recognition = await autoFetch<imageRequestBody, AutoFetchImagePathReturnType>("image/", "PUT", faceRecoBody) // {entries: number, fr_response:Array}
     console.log("Reco to:")
     console.log(recognition)
     const arrayOfBoundingObjects = calculateFaceLocation(recognition.fr_response)

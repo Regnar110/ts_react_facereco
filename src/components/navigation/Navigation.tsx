@@ -6,6 +6,7 @@ interface NavigationProps {
     isSignedIn:boolean
     onUserSignOut():void
 }
+
 const Navigation = ({onRouteChange, isSignedIn, onUserSignOut}:NavigationProps) => {
     if(isSignedIn) {
         return(

@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import { SignInState, SignInProps } from "../../Interfaces/State/SignInState";
 import { autoFetch } from "../../utils/autoFetch";
+import { SignInRequestBody } from "../../Interfaces/FaceRecognition/FaceRecognition_interface";
+import { AutoFetchSignIn_RegisterReturnType } from "../../Interfaces/AutoFetchReturnTypes/autoFetchReturnInterface";
 
 class SignIn extends Component<SignInProps, SignInState> {
     state: SignInState = {
@@ -17,11 +19,11 @@ class SignIn extends Component<SignInProps, SignInState> {
     }
 
     onSubmitSignIn = async () => {
-        const reqBody = {
+        const reqBody: SignInRequestBody = {
             email: this.state.signInEmail,
             password:this.state.signInPassword
         }
-        const user = await autoFetch("signin/", "POST", reqBody )
+        const user = await autoFetch<SignInRequestBody, AutoFetchSignIn_RegisterReturnType>("signin/", "POST", reqBody )
         if(typeof user === "object") {
             console.log(user)
             this.props.loadUser(user)

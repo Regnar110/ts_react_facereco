@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import { RegisterProps, RegisterState } from "../../Interfaces/State/RegisterState";
 import { autoFetch } from "../../utils/autoFetch";
+import { RegisterRequestBody } from "../../Interfaces/FaceRecognition/FaceRecognition_interface";
+import { AutoFetchSignIn_RegisterReturnType } from "../../Interfaces/AutoFetchReturnTypes/autoFetchReturnInterface";
 
 class Register extends Component<RegisterProps, RegisterState> {
     state: RegisterState = {
@@ -22,13 +24,13 @@ class Register extends Component<RegisterProps, RegisterState> {
     }
 
     onRegister = async () => {
-        const reqBody = {
+        const reqBody:RegisterRequestBody = {
             name: this.state.registerName,
             email: this.state.registerEmail,
             password:this.state.registerPassword
         }
 
-        const user = await autoFetch("register/", "POST", reqBody)
+        const user = await autoFetch<RegisterRequestBody, AutoFetchSignIn_RegisterReturnType>("register/", "POST", reqBody)
         console.log(user)
         this.props.loadUser(user)
         this.props.onRouteChange("home")

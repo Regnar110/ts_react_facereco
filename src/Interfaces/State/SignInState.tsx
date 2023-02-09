@@ -16,7 +16,3 @@ export interface SignInProps {
     ):void
 }
 
-export interface SignInRequestBody {
-    email: string,
-    password: string
-}
