@@ -62,8 +62,6 @@ class App extends Component<object, AppState> {
     }
 
     const recognition = await autoFetch<imageRequestBody, AutoFetchImagePathReturnType>("image/", "PUT", faceRecoBody) // {entries: number, fr_response:Array}
-    console.log("Reco to:")
-    console.log(recognition)
     const arrayOfBoundingObjects = calculateFaceLocation(recognition.fr_response)
     this.setState({box:[...arrayOfBoundingObjects], user: Object.assign(this.state.user, {entries: recognition.entries})})
 
