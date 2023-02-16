@@ -10,6 +10,8 @@ const ImageLinkForm:React.FC<ImageLinkFormProps> = ({onInputChange, onButtonSubm
         <div>
             <p className="f3 center">
                 {`This Magic Brain will detect faces in your pictures!`}
+                <br/>
+                {`Paste image url with jpg, jpeg, png etc. at the end and click "Detect"!`}
             </p>
             <div className="center">
                 <div className="form center pa4 br3 shadow-5">
