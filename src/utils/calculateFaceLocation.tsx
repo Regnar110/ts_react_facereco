@@ -1,4 +1,5 @@
 import React from "react";
+
 import { BoundingBoxArrayOfObjects } from "../Interfaces/FaceRecognition/FaceRecognition_interface";
 
 export const calculateFaceLocation = (data:BoundingBoxArrayOfObjects[]):BoundingBoxArrayOfObjects[] => {

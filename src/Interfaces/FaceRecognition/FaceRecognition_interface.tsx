@@ -1,32 +1,5 @@
 import React from "react"
 
-//FaceRecognition UTILITY FUNCTION
-
-export interface FaceRecoBody {
-    user_app_id: {
-        user_id: string,
-        app_id: string,
-    },
-    inputs: [
-        {
-            data: {
-                image: {
-                    url: URL
-                }
-            }
-        }
-    ]
-}
-
-export interface RequestOptions {
-    method: string,
-    headers: {
-        Accept: string,
-        Authorization: string
-    },
-    body: string
-};
-
 //getBoundingBox utility return interface
 
 export interface BoundingBoxArrayOfObjects {
@@ -36,6 +9,23 @@ export interface BoundingBoxArrayOfObjects {
     right_col:number;
 }
 
+//AutoFetch reqBody Interfaces
+
+export interface imageRequestBody {
+    id: string,
+    imageURL: string,
+}
+
+export interface RegisterRequestBody {
+    name: string,
+    email: string,
+    password: string,
+}
+
+export interface SignInRequestBody {
+    email: string,
+    password: string
+}
 
 //FaceRecognition COMPONENT
 

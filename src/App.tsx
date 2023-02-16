@@ -10,12 +10,14 @@ import ParticlesBg from 'particles-bg'
 // 4c3898a7de1c4ee288743bceb3522aeb
 
 //INTERFACES
-import { AppState } from './Interfaces/AppState/AppState';
+import { AppState, LoadedUser } from './Interfaces/State/AppState';
+import { AutoFetchImagePathReturnType } from './Interfaces/AutoFetchReturnTypes/autoFetchReturnInterface';
 
 //UTILS
-import { faceRecognition } from './utils/faceRecognition';
-import { calculateFaceLocation } from './utils/calculateFaceLocation';
 import './App.css';
+import { autoFetch } from './utils/autoFetch';
+import { calculateFaceLocation } from './utils/calculateFaceLocation';
+import { imageRequestBody } from './Interfaces/FaceRecognition/FaceRecognition_interface';
 
 class App extends Component<object, AppState> {
     state: AppState = {
@@ -23,8 +25,25 @@ class App extends Component<object, AppState> {
       imageURL: "",
       box: [],
       route: "signin",
-      isSignedIn: false
+      isSignedIn: false,
+      user: {
+        id: "",
+        name: "",
+        email:"",
+        entries: 0,
+        joined: ""
+      }
     };
+
+  loadUser = (userData:LoadedUser) => {
+    this.setState({user: {
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+      entries: userData.entries,
+      joined: userData.joined
+    }}, () => console.log(this.state.user)) /// TUUUUU 
+  }
 
   onInputChange = (target: HTMLInputElement) => {
     this.setState({input: target.value})
@@ -36,14 +55,16 @@ class App extends Component<object, AppState> {
       {imageURL: this.state.input, input:"", box:[]},
       () => (document.querySelector("input") as HTMLInputElement).value = ""
     )
-    const recognition = await faceRecognition(new URL(this.state.input))
-    if(typeof recognition === "boolean") {
-      console.log("There is no faces on this image");
-      return;
-    } else {
-      const arrayOfBoundingObjects = calculateFaceLocation(recognition)
-      this.setState({box:[...arrayOfBoundingObjects]})
+
+    const faceRecoBody:imageRequestBody = {
+      id: this.state.user.id,
+      imageURL: this.state.input,
     }
+
+    const recognition = await autoFetch<imageRequestBody, AutoFetchImagePathReturnType>("image/", "PUT", faceRecoBody) // {entries: number, fr_response:Array}
+    const arrayOfBoundingObjects = calculateFaceLocation(recognition.fr_response)
+    this.setState({box:[...arrayOfBoundingObjects], user: Object.assign(this.state.user, {entries: recognition.entries})})
+
   }
 
   onRouteChange = (route:string) => {
@@ -55,17 +76,33 @@ class App extends Component<object, AppState> {
     this.setState({route:route})
   }
 
+  onUserSignOut = () => {
+    this.setState({
+      input:"",
+      imageURL: "",
+      box: [],
+      isSignedIn: false,
+      user: {
+        id:"",
+        name:"",
+        email:"",
+        entries: 0,
+        joined: ""
+      }
+    })
+  }
+
 
   render():JSX.Element {
     const {isSignedIn, imageURL, route, box } = this.state
     return(
       <div className='App'>
         <ParticlesBg type="custom" bg={true} />       
-        <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn}/>
+        <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} onUserSignOut={this.onUserSignOut}/>
         {this.state.route === "home" ?
         <>
           <Logo />
-          <Rank />
+          <Rank rank={this.state.user.entries} name={this.state.user.name}/>
           <ImageLinkForm 
             onInputChange={this.onInputChange}
             onButtonSubmit={this.onButtonSubmit}/>
@@ -75,9 +112,9 @@ class App extends Component<object, AppState> {
         </>
         :(      
           route === "signin" ?
-            <SignIn onRouteChange={this.onRouteChange}/>
+            <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
           :
-            <Register onRouteChange={this.onRouteChange} />
+            <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         )
         }
       </div>
