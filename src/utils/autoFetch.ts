@@ -1,8 +1,9 @@
 
 export const autoFetch = async <T, U>(path:string, method:string, reqBody: T):Promise<U> => {
-    const response = await fetch(`https://smartbrain-388809.lm.r.appspot.com/${path}`, {
+  console.log("jestem")
+    const response = await fetch(`http://localhost:3001/${path}`, {
         method: method,
-        mode: "no-cors", // no-cors, *cors, same-origin
+        mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
         credentials: "same-origin", // include, *same-origin, omit
         headers: {
@@ -17,3 +18,5 @@ export const autoFetch = async <T, U>(path:string, method:string, reqBody: T):Pr
     console.log(data)
     return data
 }
+
+// https://smartbrain-388809.lm.r.appspot.com
