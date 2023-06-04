@@ -14,5 +14,6 @@ export const autoFetch = async <T, U>(path:string, method:string, reqBody: T):Pr
         body: JSON.stringify(reqBody)
     })
     const data:U = await response.json();
+    console.log(data)
     return data
 }
