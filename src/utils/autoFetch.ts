@@ -1,6 +1,6 @@
 
 export const autoFetch = async <T, U>(path:string, method:string, reqBody: T):Promise<U> => {
-    const response = await fetch(`https://smartbrain-377721.lm.r.appspot.com/${path}`, {
+    const response = await fetch(`https://smartbrain-388809.lm.r.appspot.com/${path}`, {
         method: method,
         mode: "no-cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
